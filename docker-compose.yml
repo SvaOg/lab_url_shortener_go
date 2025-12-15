@@ -1,0 +1,44 @@
+services:
+  # 1. База данных
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "6432:5432"
+    volumes:
+      # Внимание: я исправил опечатку в пути (было postgressql, правильно postgresql)
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Бэкенд (Python + FastAPI)
+  backend:
+    build: . # Строим из текущей папки
+    container_name: url_shortener_backend
+    ports:
+      - "8000:8000" # Доступен на localhost:8000
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Внутри сети Docker мы обращаемся к базе по имени сервиса "db"
+      - DB_URL=postgres://postgres:postgres@db:5432/postgres?sslmode=disable
+
+  # 3. Фронтенд (Vue + Nginx)
+  frontend:
+    build: ./frontend # Строим из папки frontend
+    container_name: url_shortener_frontend
+    ports:
+      - "3000:80" # Пробрасываем 80 порт контейнера на 3000 хоста
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

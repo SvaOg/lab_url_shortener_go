@@ -1,0 +1,84 @@
+# --- Binaries & Build Output ---
+# Игнорируем скомпилированные бинарники (обычно без расширения в Unix)
+# Если вы собираете приложение в корень проекта, добавьте имя вашего бинарника сюда.
+# Лучшая практика — собирать в папку /bin/ или /build/
+/bin/
+/dist/
+/build/
+
+# Бинарники Windows и прочие системные библиотеки
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# --- Test Output ---
+# Артефакты, создаваемые при запуске `go test`
+*.test
+*.out
+coverage.out
+profile.out
+
+# --- Dependency Directories ---
+# Папка vendor обычно игнорируется, если вы используете Go Modules (стандарт сейчас).
+# Если ваша команда решила хранить зависимости в репозитории, уберите эту строку.
+vendor/
+
+# --- Go Workspace (Go 1.18+) ---
+# Локальные настройки рабочего пространства
+go.work
+go.work.sum
+
+# --- IDE & Editors ---
+# JetBrains (GoLand, IntelliJ)
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# MacOS specific
+.DS_Store
+
+# --- Environment Variables / Secrets ---
+# КРИТИЧНО: Никогда не коммитьте .env файлы с реальными ключами
+*.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- Tool Specific ---
+# Если используете task runner'ы или генераторы
+.task/
+.trac/
+# Docker
+.docker/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Frontend (Node.js)
+frontend/node_modules/
+frontend/dist/
+frontend/.output/
+frontend/.nuxt
+/
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
