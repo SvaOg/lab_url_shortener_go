@@ -59,6 +59,12 @@ func main() {
 		log.Fatal("Failed to create table:", err)
 	}
 
+	// Создаем индекс для быстрого поиска по длинной ссылке (на будущее)
+	// idxQuery := `CREATE INDEX IF NOT EXISTS idx_long_url ON short_urls (long_url);`
+	// if _, err := db.Exec(idxQuery); err != nil {
+	// 	log.Fatal("Failed to create index:", err)
+	// }
+
 	// 3. Настройка роутера (Chi)
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -95,7 +101,7 @@ func createShortURL(w http.ResponseWriter, r *http.Request) {
 
 	var slug string
 	// Попытки генерации (Retry logic)
-	for i := 0; i < 5; i++ {
+	for range 5 {
 		slug = generateSlug(6)
 
 		// Пытаемся вставить. Если slug занят, Postgres вернет ошибку.
